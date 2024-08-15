@@ -2,15 +2,10 @@ const User = require("../models/authModel");
 const catchAsync = require("../utils/catchAsync")
 const AppError = require("../utils/appError")
 const { promisify } = require("util");
-const Email = require("../utils/email");
 const jwt = require("jsonwebtoken");
-//const _ = require("underscore")
 const _ = require("lodash");
-const crypto = require("crypto");
-const sendEmail = require("../utils/email")
 const { emailService, tokenService } = require("../services");
 const httpStatus = require("http-status");
-const bcrypt = require("bcryptjs")
 const { validateRegister } = require("../validator/registerValidation")
 
 const signToken = id => {
@@ -34,24 +29,15 @@ const createSendToken = (user, statusCode, res) => {
 const token = tokenService.generateVerifyEmailToken();
 const resetToken = tokenService.generateVerifyEmailToken();
 
-//const emailToken = Math.floor(Math.random() * 98776) + 10000;
-
 exports.signUp = catchAsync (async(req, res, next)=> {
     const { error, value } = validateRegister(req.body);
 if (error) {
     console.log(error)
     return next(new AppError(error.details, 400));
 }
-    console.log("Token:", token)
-    //_.extend(req.body, {confirmEmailToken: token})
-    //console.log("TEST>>",_.extend(req.body,{confirmEmailToken: token}))
     const { email } = req.body;
     const checkEmail = await User.findOne({ email })
-    // if (checkEmail) {
-    //     return res.status(httpStatus.BAD_REQUEST).json({
-    //         message: "Email already exists"
-    //     })
-    // } 
+
     if (checkEmail) {
     return next(new AppError('User already Exists with the email', 400)) 
 }
@@ -142,11 +128,9 @@ exports.forgotPassword = catchAsync( async (req, res, next) => {
     
     //3) Send it to user's email   
 try {
-    const resetUrl = `${req.protocol}://${req.get("host")}
-    /api/user/resetPassword/${resetToken}`;
-    //await new Email(user, resetToken).sendPasswordReset();
+    const resetUrl = `${req.protocol}://${req.get("host")}/api/user/resetPassword/${resetToken}`;
     const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetUrl}.\nIf you didn't forget your password, please ignore this email`;
-     await emailService.sendResetPasswordEmail(user.email, resetToken);
+     await emailService.sendResetPasswordEmail(user.email, message);
       res.status(200).json({
         status: 'success',
         message: 'Token sent to email'

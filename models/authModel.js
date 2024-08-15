@@ -24,14 +24,6 @@ const userSchema =  new mongoose.Schema({
     },
     passwordConfirm: {
         type:String,
-       // require: true
-        // validate: {
-        //     validator: function(value) {
-        //         return value === this.password;
-        //     },
-        //     message: "Passwords do not match"
-        // }
-        // // validate: [validator.equals(this.password)],
     },
     confirmEmail: {
       type: Boolean,
@@ -40,6 +32,7 @@ const userSchema =  new mongoose.Schema({
     confirmEmailToken: Number,
     passwordChangedAt: Date,
     passwordResetToken: Number,
+
     createdAt: {
         type: Date,
         default: Date.now(),
@@ -84,24 +77,6 @@ userSchema.methods.correctPassword = async function (candidatePassword, userPass
     next();
   });
    
-//   userSchema.methods.createPasswordResetToken = async function() {
-//     const resetToken = crypto.randomBytes(32).toString('hex'); 
-
-//     console.log('Generated Reset Token:', resetToken);
-//     this.passwordResetToken = crypto.createHash('sha256')
-//     .update(resetToken).digest('hex') //hasshing reset password
-
-//     console.log('Hashed Reset Token:', this.passwordResetToken);
-//     //console.log({resetToken}, this.passwordResetToken)
-//     this.passwordResetExpires = Date.now() + 10 * 60 * 1000 //conwertin the time in milli sec to 10 minutes
-// console.log("Time,", this.passwordResetExpires)
-//     return resetToken;
-//     // const resetToken = crypto.randomBytes(32).toString('hex');
-//     // this.passwordResetToken = bcrypt.hashSync(resetToken, 12);
-//     // this.passwordResetExpires = Date.now() + 10 * 60 * 1000; // 10 minutes expiration
-//     // return resetToken;
-    
-//   }
 
 const User = mongoose.model("User", userSchema)
 module.exports = User;

@@ -19,5 +19,3 @@ router
 
 
 module.exports = router;
-
-// authController.protect

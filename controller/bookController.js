@@ -54,19 +54,6 @@ exports.getBook = catchAsync(async (req, res, next) => {
     }
 )
 
-// exports.createBook = catchAsync(async (req, res, next)=> {
-//         const newBook = await Book.create(req.body)
-//         res.status(201).json({
-//             status: "Success",
-//             message: "Book created",
-//             data: {
-//                 book: newBook
-//             }
-//         })
-//     }
-// )
-
-
 
 // Create a book
 exports.createBook = catchAsync(async (req, res, next) => {
@@ -117,37 +104,3 @@ exports.deleteBook = catchAsync(async (req, res, next)=> {
             })
     })
 
-
-
-
-
-
-
-
-
-
-
-
-       //    let query ={}
-    //     const page =req.query.page *1 || 1;
-    //     const limit = req.query.limit *1 || 10
-    //     const skip = (page -1) * limit
-       
-    //     query = query.skip(skip).limit;
-    //     if(req.query.page) {
-    //        const numBooks = await Book.countDocuments()
-    //        if (skip >= numBooks) {
-    //         return res.status(404).json({
-    //             status: 'fail',
-    //             message: 'This page does not exist'
-    //         });
-    //     }
-    //     }
-    //     const books = await query
-    //     res.status(200).json({
-    //         status: "Success",
-    //         results: books.length,
-    //         data: {
-    //             books
-    //         }
-        //})
