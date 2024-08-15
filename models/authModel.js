@@ -33,9 +33,13 @@ const userSchema =  new mongoose.Schema({
         // }
         // // validate: [validator.equals(this.password)],
     },
+    confirmEmail: {
+      type: Boolean,
+      default: false
+    },
+    confirmEmailToken: Number,
     passwordChangedAt: Date,
-    passwordResetToken: String,
-    passwordResetExpires: Date,
+    passwordResetToken: Number,
     createdAt: {
         type: Date,
         default: Date.now(),
@@ -45,7 +49,6 @@ const userSchema =  new mongoose.Schema({
         type: Boolean,
         default: false,
       },
-      confirmEmailToken: Number,
     confirmEmailTokenExpires: Date, 
 
 
@@ -81,24 +84,24 @@ userSchema.methods.correctPassword = async function (candidatePassword, userPass
     next();
   });
    
-  userSchema.methods.createPasswordResetToken = function() {
-    const resetToken = crypto.randomBytes(32).toString('hex'); 
+//   userSchema.methods.createPasswordResetToken = async function() {
+//     const resetToken = crypto.randomBytes(32).toString('hex'); 
 
-    console.log('Generated Reset Token:', resetToken);
-    this.passwordResetToken = crypto.createHash('sha256')
-    .update(resetToken).digest('hex') //hasshing reset password
+//     console.log('Generated Reset Token:', resetToken);
+//     this.passwordResetToken = crypto.createHash('sha256')
+//     .update(resetToken).digest('hex') //hasshing reset password
 
-    console.log('Hashed Reset Token:', this.passwordResetToken);
-    //console.log({resetToken}, this.passwordResetToken)
-    this.passwordResetExpires = Date.now() + 10 * 60 * 1000 //conwertin the time in milli sec to 10 minutes
-console.log("Time,", this.passwordResetExpires)
-    return resetToken;
-    // const resetToken = crypto.randomBytes(32).toString('hex');
-    // this.passwordResetToken = bcrypt.hashSync(resetToken, 12);
-    // this.passwordResetExpires = Date.now() + 10 * 60 * 1000; // 10 minutes expiration
-    // return resetToken;
+//     console.log('Hashed Reset Token:', this.passwordResetToken);
+//     //console.log({resetToken}, this.passwordResetToken)
+//     this.passwordResetExpires = Date.now() + 10 * 60 * 1000 //conwertin the time in milli sec to 10 minutes
+// console.log("Time,", this.passwordResetExpires)
+//     return resetToken;
+//     // const resetToken = crypto.randomBytes(32).toString('hex');
+//     // this.passwordResetToken = bcrypt.hashSync(resetToken, 12);
+//     // this.passwordResetExpires = Date.now() + 10 * 60 * 1000; // 10 minutes expiration
+//     // return resetToken;
     
-  }
+//   }
 
 const User = mongoose.model("User", userSchema)
 module.exports = User;

@@ -4,6 +4,7 @@ const authController = require("../controller/authController")
 
 const router = express.Router()
 
+router.use(authController.protect)
 router.
 route("/")
 .get( bookController.getAllBooks)

@@ -6,6 +6,7 @@ const userSchema = Joi.object({
     email: Joi.string().lowercase().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
     password: Joi.string().required(),
     passwordConfirm: Joi.ref('password'),
+    confirmEmailToken: Joi.string()
 
 });
 
